@@ -27,11 +27,12 @@ public class WebController {
     }
 
     // http://localhost:8080/login/?username=danny&password=danny123
+    // postman 在header下加入：Authorization ： token
     @PostMapping("/login")
     public ResponseBean login(@RequestParam("username") String username,
                               @RequestParam("password") String password) {
         UserBean userBean = userService.getUser(username);
-        if (userBean.getPassword().equals(password)) {
+        if (userBean.getPassword().equals(password)) { // 获取 Authorization
             return new ResponseBean(200, "Login success", JWTUtil.sign(username, password));
         } else {
             throw new UnauthorizedException();
